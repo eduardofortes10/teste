@@ -10,7 +10,6 @@
   <!-- Open Graph / WhatsApp (troque a URL absoluta após o deploy) -->
   <meta property="og:title" content="Para Você 💚">
   <meta property="og:description" content="Um cantinho com nossas fotos e músicas.">
-  <!-- Troque SEU-DOMINIO depois de publicar na Vercel -->
   <meta property="og:image" content="https://SEU-DOMINIO.vercel.app/assets/photos/01.jpg">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +24,7 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Preload da 1ª música (opcional, melhora início do player) -->
+  <!-- Preload da 1ª música (opcional) -->
   <link rel="preload" as="audio" href="assets/music/musica1.mp3">
 
   <style>
@@ -42,32 +41,30 @@
     .glass{ background: rgba(255,255,255,.06); backdrop-filter: blur(10px); }
     .snap-x-mandatory{ scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
     .snap-center{ scroll-snap-align:center; }
-    .h-safe{ min-height: calc(100dvh - 88px); } /* espaço pro player fixo */
+    .h-safe{ min-height: calc(100dvh - 96px); } /* espaço pro player fixo */
 
-    /* animação do coração */
     @keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
     .float { animation: float 4s ease-in-out infinite; }
 
-    /* esconder barra horizontal no carrossel */
     .no-scrollbar::-webkit-scrollbar{ display:none; }
     .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
   </style>
 </head>
 <body class="bg-app text-white selection:bg-emerald-400/30">
 
-  <!-- Top bar estilo “profile” -->
+  <!-- Top bar -->
   <header class="sticky top-0 z-40 px-4 py-3 flex items-center gap-3 bg-black/20 backdrop-blur">
     <img src="assets/photos/01.jpg" alt="avatar do casal" class="w-9 h-9 rounded-full object-cover ring-1 ring-white/20">
     <div class="min-w-0">
-      <p class="text-sm font-semibold truncate">Eduardo ✦ <!-- EDITAR AQUI: seu nome --></p>
+      <p class="text-sm font-semibold truncate">Eduardo ✦ <!-- seu nome --></p>
       <p class="text-[11px] text-white/60 leading-none truncate">@para_[nome_dela]</p>
     </div>
-    <div class="ml-auto flex items-center gap-2">
+    <div class="ml-auto">
       <button id="btnPlayTop" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-black text-xs font-bold" title="Tocar/Pausar">▶︎ Tocar</button>
     </div>
   </header>
 
-  <!-- Capa full-screen -->
+  <!-- Capa -->
   <section class="h-safe px-5 pt-6 pb-4 flex flex-col">
     <div class="relative rounded-3xl overflow-hidden ring-1 ring-white/10">
       <img src="assets/photos/01.jpg" alt="Foto de capa" class="w-full aspect-[9/14] object-cover" loading="eager" fetchpriority="high">
@@ -77,15 +74,13 @@
           Para <span class="text-emerald-400">você</span>, meu amor
         </h1>
         <p class="text-white/80 text-sm mt-1">
-          <!-- EDITAR AQUI -->
-          Desde <span class="text-emerald-300 font-semibold">12/03/2023</span>, cada momento com você é único. 💚
+          Desde <span class="text-emerald-300 font-semibold">05/10/2024</span>, cada momento com você é único. 💚
         </p>
       </div>
-      <!-- coração flutuante -->
       <div class="absolute -top-2 -right-1 text-3xl float" aria-hidden="true">💚</div>
     </div>
 
-    <!-- Botões principais -->
+    <!-- Ações -->
     <div class="mt-4 grid grid-cols-2 gap-3">
       <a href="#carrossel" class="glass rounded-2xl p-3 text-center ring-1 ring-white/10">
         <div class="text-xl" aria-hidden="true">🖼️</div>
@@ -97,78 +92,44 @@
       </a>
     </div>
 
-    <!-- Mini info -->
+    <!-- Frase -->
     <div class="mt-4 glass rounded-2xl p-4 ring-1 ring-white/10">
       <p class="text-sm leading-relaxed text-white/80">
-        <!-- EDITAR AQUI -->
         Obrigado por cada risada, cada abraço e por ser meu porto seguro. Que esse link guarde
         um pouco do que sinto por você. ✨
       </p>
     </div>
   </section>
 
-  <!-- Carrossel horizontal (arraste pro lado) -->
+  <!-- Carrossel (renderizado via JS) -->
   <section id="carrossel" class="px-0 pb-4">
     <div class="px-5 flex items-end justify-between">
       <h2 class="text-lg font-extrabold font-display">Nossas fotos</h2>
       <span class="text-[11px] text-white/60">arraste →</span>
     </div>
 
-    <div class="mt-3 overflow-x-auto snap-x-mandatory no-scrollbar" aria-label="Carrossel de fotos">
-      <div class="flex gap-3 px-5">
-        <!-- DUPLIQUE ESTES CARDS e troque src/alt -->
-        <div class="snap-center shrink-0 w-[78%] rounded-3xl overflow-hidden ring-1 ring-white/10">
-          <img src="assets/photos/01.jpg" class="w-full aspect-[9/14] object-cover" alt="Foto 1" loading="lazy">
-        </div>
-        <div class="snap-center shrink-0 w-[78%] rounded-3xl overflow-hidden ring-1 ring-white/10">
-          <img src="assets/photos/02.jpg" class="w-full aspect-[9/14] object-cover" alt="Foto 2" loading="lazy">
-        </div>
-        <div class="snap-center shrink-0 w-[78%] rounded-3xl overflow-hidden ring-1 ring-white/10">
-          <img src="assets/photos/03.jpg" class="w-full aspect-[9/14] object-cover" alt="Foto 3" loading="lazy">
-        </div>
-        <!-- ... -->
-      </div>
+    <div id="carousel" class="mt-3 overflow-x-auto snap-x-mandatory no-scrollbar px-5" aria-label="Carrossel de fotos">
+      <div id="slidesWrap" class="flex gap-3"></div>
     </div>
   </section>
 
-  <!-- Carta/declaração curta -->
-  <section id="carta" class="px-5 pb-4">
+  <!-- Cartinha -->
+  <section id="carta" class="px-5 pb-28">
     <div class="glass rounded-3xl p-5 ring-1 ring-white/10">
       <h3 class="text-base font-bold mb-1 font-display">Um recadinho</h3>
       <p class="text-[13px] text-white/80 leading-6">
-        <!-- EDITAR AQUI -->
-        Você é meu lar. Eu te escolheria mil vezes, em mil vidas. Obrigado por existir e
-        por me permitir caminhar ao seu lado. 💫
+        Você é meu lar. Eu te escolheria mil vezes, em mil vidas. Obrigado por existir e por me permitir caminhar ao seu lado. 💫
       </p>
     </div>
   </section>
 
-  <!-- Linha do tempo (cards pequenos) -->
-  <section class="px-5 pb-28">
-    <h3 class="text-base font-extrabold mb-2 font-display">Momentos</h3>
-    <div class="grid grid-cols-2 gap-3">
-      <!-- DUPLIQUE/EDITE -->
-      <div class="glass rounded-2xl p-3 ring-1 ring-white/10">
-        <p class="text-xs text-white/60">12/03/2023</p>
-        <p class="text-sm font-semibold mt-0.5">Nosso começo</p>
-        <p class="text-[12px] text-white/70 mt-1">Primeira saída 🥤</p>
-      </div>
-      <div class="glass rounded-2xl p-3 ring-1 ring-white/10">
-        <p class="text-xs text-white/60">26/07/2024</p>
-        <p class="text-sm font-semibold mt-0.5">Viagem</p>
-        <p class="text-[12px] text-white/70 mt-1">Pôr do sol perfeito 🌅</p>
-      </div>
-      <!-- ... -->
-    </div>
-  </section>
-
-  <!-- Player fixo (estilo app) -->
+  <!-- Player fixo -->
   <div class="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(env(safe-area-inset-bottom),12px)]">
     <div class="glass rounded-2xl p-3 ring-1 ring-white/10">
       <div class="flex items-center gap-3">
-        <button id="prevBtn" class="p-2 rounded-lg hover:bg-white/10" title="Anterior" aria-label="Faixa anterior">⏮️</button>
+        <button id="prevBtn" class="p-2 rounded-lg hover:bg-white/10" title="Anterior" aria-label="Foto anterior">⏮️</button>
         <button id="playBtn" class="p-3 rounded-full bg-emerald-500 text-black font-bold" title="Play/Pause" aria-label="Tocar ou Pausar">▶️</button>
-        <button id="nextBtn" class="p-2 rounded-lg hover:bg-white/10" title="Próxima" aria-label="Próxima faixa">⏭️</button>
+        <button id="nextBtn" class="p-2 rounded-lg hover:bg-white/10" title="Próxima" aria-label="Próxima foto">⏭️</button>
 
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between">
@@ -178,17 +139,21 @@
           <input id="seek" type="range" min="0" max="100" value="0" class="w-full accent-emerald-400 h-1 mt-1" aria-label="Linha do tempo da música">
         </div>
       </div>
-      <div id="playlist" class="mt-2 grid grid-cols-2 gap-2 text-[12px]"></div>
       <audio id="audio" preload="metadata" class="hidden"></audio>
     </div>
   </div>
 
   <script>
-    // ====== LISTA DE MÚSICAS (EDITE AQUI) ======
-    const tracks = [
-      { title: "Nossa Música 1", src: "assets/music/musica1.mp3" },
-      { title: "Nossa Música 2", src: "assets/music/musica2.mp3" },
-      // { title: "…", src: "assets/music/…mp3" },
+    // ============================
+    // 1) SLIDES (foto ↔ música)
+    //    -> Troque os caminhos para os seus arquivos reais
+    // ============================
+    const slides = [
+      { photo: "assets/photos/01.jpg", music: { title: "Nossa Música 1", src: "assets/music/musica1.mp3" } },
+      { photo: "assets/photos/02.jpg", music: { title: "Nossa Música 2", src: "assets/music/musica2.mp3" } },
+      // Exemplo de mais itens:
+      // { photo: "assets/photos/03.jpg", music: { title: "Nossa Música 3", src: "assets/music/musica3.mp3" } },
+      // { photo: "assets/photos/04.jpg", music: { title: "Nossa Música 4", src: "assets/music/musica4.mp3" } },
     ];
 
     // ====== ELEMENTOS ======
@@ -200,70 +165,94 @@
     const seek = document.getElementById('seek');
     const time = document.getElementById('time');
     const trackTitle = document.getElementById('trackTitle');
-    const playlist = document.getElementById('playlist');
 
-    let current = 0, seeking = false;
+    const carousel = document.getElementById('carousel');
+    const slidesWrap = document.getElementById('slidesWrap');
 
-    function loadTrack(i){
-      current = i;
-      audio.src = tracks[i].src;
-      trackTitle.textContent = tracks[i].title;
-      audio.load();
-      highlightActive();
-    }
-    function fmt(t){
-      if(isNaN(t)) return "0:00";
-      const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0');
-      return `${m}:${s}`;
-    }
-    function highlightActive(){
-      [...playlist.children].forEach((el, idx)=>{
-        el.classList.toggle('bg-emerald-500/15', idx===current);
-        el.classList.toggle('ring-emerald-400/40', idx===current);
+    let currentSlide = 0;
+    let seeking = false;
+
+    // Renderiza os cards do carrossel
+    function renderSlides(){
+      slidesWrap.innerHTML = '';
+      slides.forEach((s, i) => {
+        const card = document.createElement('div');
+        card.className = 'snap-center shrink-0 w-[78%] rounded-3xl overflow-hidden ring-1 ring-white/10';
+        card.dataset.index = i;
+
+        const img = document.createElement('img');
+        img.src = s.photo;
+        img.alt = `Foto ${i+1}`;
+        img.loading = 'lazy';
+        img.className = 'w-full aspect-[9/14] object-cover';
+
+        card.appendChild(img);
+        slidesWrap.appendChild(card);
       });
     }
-    function renderPlaylist(){
-      playlist.innerHTML = '';
-      tracks.forEach((t,i)=>{
-        const b = document.createElement('button');
-        b.className = 'w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 ring-1 ring-white/5 truncate';
-        b.innerHTML = `🎵 ${t.title}`;
-        b.addEventListener('click', ()=>{
-          loadTrack(i);
-          audio.play();
-          playBtn.textContent='⏸️';
-        });
-        playlist.appendChild(b);
-      });
-      highlightActive();
-    }
 
-    // Controles
-    function togglePlay(){
-      if(!audio.src && tracks.length) loadTrack(0);
-      if(audio.paused){
-        audio.play();
-        playBtn.textContent='⏸️';
-      } else {
-        audio.pause();
-        playBtn.textContent='▶️';
+    // Carrega música do slide i
+    function loadTrackForSlide(i){
+      const t = slides[i]?.music;
+      if(!t) return;
+      const wasPlaying = !audio.paused;
+      if (audio.src !== new URL(t.src, window.location).href) {
+        audio.src = t.src;
+        audio.load();
       }
+      trackTitle.textContent = t.title;
+      if (wasPlaying) audio.play().catch(()=>{});
+    }
+
+    // Formata tempo mm:ss
+    function fmt(t){ if(isNaN(t)) return "0:00"; const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0'); return `${m}:${s}`; }
+
+    // Vai para um slide específico (e sincroniza música)
+    function goToSlide(i){
+      currentSlide = (i + slides.length) % slides.length;
+      const card = slidesWrap.children[currentSlide];
+      if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      loadTrackForSlide(currentSlide);
+    }
+
+    // Observa qual card está mais visível para sincronizar música ao arrastar
+    let io;
+    function initObserver(){
+      if (io) io.disconnect();
+      io = new IntersectionObserver((entries) => {
+        // pega o mais visível
+        let best = null;
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+          }
+        }
+        if (best) {
+          const idx = Number(best.target.dataset.index);
+          if (idx !== currentSlide) {
+            currentSlide = idx;
+            loadTrackForSlide(currentSlide);
+          }
+        }
+      }, { root: carousel, threshold: [0.6] });
+
+      [...slidesWrap.children].forEach(el => io.observe(el));
+    }
+
+    // Controles do player
+    function togglePlay(){
+      // garante que há uma faixa carregada
+      if(!audio.src){
+        loadTrackForSlide(currentSlide);
+      }
+      if(audio.paused){ audio.play().catch(()=>{}); playBtn.textContent='⏸️'; }
+      else { audio.pause(); playBtn.textContent='▶️'; }
     }
     playBtn.addEventListener('click', togglePlay);
     btnPlayTop.addEventListener('click', togglePlay);
 
-    prevBtn.addEventListener('click', ()=>{
-      if(!tracks.length) return;
-      loadTrack((current-1+tracks.length)%tracks.length);
-      audio.play();
-      playBtn.textContent='⏸️';
-    });
-    nextBtn.addEventListener('click', ()=>{
-      if(!tracks.length) return;
-      loadTrack((current+1)%tracks.length);
-      audio.play();
-      playBtn.textContent='⏸️';
-    });
+    prevBtn.addEventListener('click', ()=> goToSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', ()=> goToSlide(currentSlide + 1));
 
     audio.addEventListener('timeupdate', ()=>{
       if(!seeking && audio.duration){
@@ -271,7 +260,11 @@
         time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
       }
     });
-    audio.addEventListener('ended', ()=> nextBtn.click());
+    audio.addEventListener('ended', ()=> {
+      // ao terminar a música, avança para a próxima foto (e música)
+      goToSlide(currentSlide + 1);
+      // se quiser parar no final da última, comente a linha acima
+    });
 
     seek.addEventListener('input', ()=> seeking = true);
     seek.addEventListener('change', ()=>{
@@ -279,8 +272,11 @@
       seeking = false;
     });
 
-    // Inicializa
-    renderPlaylist();
+    // Inicialização
+    renderSlides();
+    initObserver();
+    // carrega a primeira música (sem tocar automaticamente – precisa do clique)
+    loadTrackForSlide(currentSlide);
   </script>
 </body>
 </html>
