@@ -17,12 +17,13 @@
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💚</text></svg>">
 
-  <!-- Google Fonts -->
+  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icones modernos -->
+  <script defer src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
 
   <!-- Preload da 1ª música (opcional) -->
   <link rel="preload" as="audio" href="assets/music/musica1.mp3">
@@ -43,127 +44,191 @@
     .snap-center{ scroll-snap-align:center; }
     .h-safe{ min-height: calc(100dvh - 96px); } /* espaço pro player fixo */
 
-    @keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
     .float { animation: float 4s ease-in-out infinite; }
 
     .no-scrollbar::-webkit-scrollbar{ display:none; }
     .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
+
+    /* LANDING */
+    .landing-bg{
+      background:
+        radial-gradient(40% 60% at 80% 10%, rgba(255,215,0,.14), transparent 60%),
+        radial-gradient(40% 60% at 10% 90%, rgba(16,185,129,.20), transparent 60%),
+        linear-gradient(180deg,#0b0f20 0%, #0b1225 100%);
+    }
+    .shine{ position:relative; overflow:hidden; }
+    .shine::after{
+      content:""; position:absolute; inset:-200% -60%;
+      background: linear-gradient(120deg, transparent 45%, rgba(255,255,255,.45) 50%, transparent 55%);
+      transform: translateX(-100%) rotate(10deg); animation: shine 3.2s infinite ease;
+    }
+    @keyframes shine{ to { transform: translateX(100%) rotate(10deg); } }
+    .gold-heart{ filter: drop-shadow(0 8px 24px rgba(255,215,0,.35)); }
+    .btn-big{ box-shadow: 0 10px 30px rgba(16,185,129,.35), inset 0 0 0 2px rgba(255,255,255,.08); }
+    .pulse{ animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.05)} 100%{transform:scale(1)} }
+    .fade-in{ animation: fade-in .6s ease forwards; }
+    .fade-out{ animation: fade-out .5s ease forwards; }
+    @keyframes fade-in { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)} }
+    @keyframes fade-out{ to{opacity:0; transform:scale(.98)} }
   </style>
 </head>
-<body class="bg-app text-white selection:bg-emerald-400/30">
+<body class="text-white">
 
-  <!-- Top bar -->
-  <header class="sticky top-0 z-40 px-4 py-3 flex items-center gap-3 bg-black/20 backdrop-blur">
-    <img src="assets/photos/01.jpg" alt="avatar do casal" class="w-9 h-9 rounded-full object-cover ring-1 ring-white/20">
-    <div class="min-w-0">
-      <p class="text-sm font-semibold truncate">Eduardo ✦ <!-- seu nome --></p>
-      <p class="text-[11px] text-white/60 leading-none truncate">@para_[Melissa_Marson]</p>
+  <!-- ===== Landing com coração dourado ===== -->
+  <section id="landing" class="landing-bg min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-10 left-10 w-64 h-64 rounded-full bg-emerald-500/15 blur-3xl"></div>
+      <div class="absolute -bottom-10 right-10 w-80 h-80 rounded-full bg-yellow-400/10 blur-3xl"></div>
     </div>
-    <div class="ml-auto">
-      <button id="btnPlayTop" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-black text-xs font-bold" title="Tocar/Pausar">▶️ Tocar</button>
-    </div>
-  </header>
 
-  <!-- Capa -->
-  <section class="h-safe px-5 pt-6 pb-4 flex flex-col">
-    <div class="relative rounded-3xl overflow-hidden ring-1 ring-white/10">
-      <img src="assets/photos/01.jpg" alt="Foto de capa" class="w-full aspect-[9/14] object-cover" loading="eager" fetchpriority="high">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-      <div class="absolute bottom-0 left-0 right-0 p-4">
-        <h1 class="text-2xl font-extrabold leading-tight font-display">
-          Para <span class="text-emerald-400">você</span>, meu amor
-        </h1>
-        <p class="text-white/80 text-sm mt-1">
-          Desde <span class="text-emerald-300 font-semibold">05/10/2024</span>, cada momento com você é único. 💚
+    <svg class="w-28 h-28 gold-heart float" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#FFD86A"/>
+          <stop offset="0.5" stop-color="#F4C542"/>
+          <stop offset="1" stop-color="#E0A100"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#g)" d="M64 112s-8-6-24-20C18 72 8 58 8 44 8 28 20 16 36 16c11 0 18 6 28 18 10-12 17-18 28-18 16 0 28 12 28 28 0 14-10 28-32 48-16 14-24 20-24 20z"/>
+    </svg>
+
+    <h1 class="mt-6 text-3xl font-extrabold font-display">Um presente pra você</h1>
+    <p class="mt-2 text-white/75">toque no botão para entrar 💫</p>
+
+    <button id="enterBtn" class="mt-6 shine pulse btn-big px-8 py-4 rounded-2xl bg-emerald-500 text-black font-extrabold text-lg">
+      Clique
+    </button>
+
+    <p class="mt-3 text-xs text-white/50">feito por Eduardo • @para_[Melissa_Marson]</p>
+  </section>
+
+  <!-- ===== App (declaração) ===== -->
+  <main id="app" class="bg-app hidden">
+    <!-- Top bar -->
+    <header class="sticky top-0 z-40 px-4 py-3 flex items-center gap-3 bg-black/20 backdrop-blur">
+      <img src="assets/photos/01.jpg" alt="avatar do casal" class="w-9 h-9 rounded-full object-cover ring-1 ring-white/20">
+      <div class="min-w-0">
+        <p class="text-sm font-semibold truncate">Eduardo ✦</p>
+        <p class="text-[11px] text-white/60 leading-none truncate">@para_[Melissa_Marson]</p>
+      </div>
+      <div class="ml-auto">
+        <button id="btnPlayTop" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-black text-xs font-bold" title="Tocar/Pausar">
+          <iconify-icon id="iconPlayTop" icon="lucide:play" class="mr-1"></iconify-icon> Tocar
+        </button>
+      </div>
+    </header>
+
+    <!-- Capa -->
+    <section class="h-safe px-5 pt-6 pb-4 flex flex-col">
+      <div class="relative rounded-3xl overflow-hidden ring-1 ring-white/10">
+        <img src="assets/photos/01.jpg" alt="Foto de capa" class="w-full aspect-[9/14] object-cover" loading="eager" fetchpriority="high">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4">
+          <h1 class="text-2xl font-extrabold leading-tight font-display">
+            Para <span class="text-emerald-400">você</span>, meu amor
+          </h1>
+          <p class="text-white/80 text-sm mt-1">
+            Desde <span class="text-emerald-300 font-semibold">05/10/2024</span>, cada momento com você é único. 💚
+          </p>
+        </div>
+        <div class="absolute -top-2 -right-1 text-3xl float" aria-hidden="true">💚</div>
+      </div>
+
+      <!-- Ações (ícones modernos) -->
+      <div class="mt-4 grid grid-cols-2 gap-3">
+        <a href="#carrossel" class="glass rounded-2xl p-3 text-center ring-1 ring-white/10">
+          <iconify-icon icon="solar:gallery-bold-duotone" class="text-2xl"></iconify-icon>
+          <div class="text-xs mt-1 text-white/80">Ver fotos</div>
+        </a>
+        <a href="#carta" class="glass rounded-2xl p-3 text-center ring-1 ring-white/10">
+          <iconify-icon icon="solar:pen-new-round-bold-duotone" class="text-2xl"></iconify-icon>
+          <div class="text-xs mt-1 text-white/80">Ler cartinha</div>
+        </a>
+      </div>
+
+      <!-- Frase -->
+      <div class="mt-4 glass rounded-2xl p-4 ring-1 ring-white/10">
+        <p class="text-sm leading-relaxed text-white/80">
+          Obrigado por cada risada, cada abraço e por ser meu porto seguro. Que esse link guarde
+          um pouco do que sinto por você. ✨
         </p>
       </div>
-      <div class="absolute -top-2 -right-1 text-3xl float" aria-hidden="true">💚</div>
-    </div>
+    </section>
 
-    <!-- Ações -->
-    <div class="mt-4 grid grid-cols-2 gap-3">
-      <a href="#carrossel" class="glass rounded-2xl p-3 text-center ring-1 ring-white/10">
-        <div class="text-xl" aria-hidden="true">🖼️</div>
-        <div class="text-xs mt-1 text-white/80">Ver fotos</div>
-      </a>
-      <a href="#carta" class="glass rounded-2xl p-3 text-center ring-1 ring-white/10">
-        <div class="text-xl" aria-hidden="true">✍️</div>
-        <div class="text-xs mt-1 text-white/80">Ler cartinha</div>
-      </a>
-    </div>
-
-    <!-- Frase -->
-    <div class="mt-4 glass rounded-2xl p-4 ring-1 ring-white/10">
-      <p class="text-sm leading-relaxed text-white/80">
-        Obrigado por cada risada, cada abraço e por ser meu porto seguro. Que esse link guarde
-        um pouco do que sinto por você. ✨
-      </p>
-    </div>
-  </section>
-
-  <!-- Carrossel (renderizado via JS) -->
-  <section id="carrossel" class="px-0 pb-4">
-    <div class="px-5 flex items-end justify-between">
-      <h2 class="text-lg font-extrabold font-display">Nossas fotos</h2>
-      <span class="text-[11px] text-white/60">arraste →</span>
-    </div>
-
-    <div id="carousel" class="mt-3 overflow-x-auto snap-x-mandatory no-scrollbar px-5" aria-label="Carrossel de fotos">
-      <div id="slidesWrap" class="flex gap-3"></div>
-    </div>
-  </section>
-
-  <!-- Cartinha -->
-  <section id="carta" class="px-5 pb-28">
-    <div class="glass rounded-3xl p-5 ring-1 ring-white/10">
-      <h3 class="text-base font-bold mb-1 font-display">Um recadinho</h3>
-      <p class="text-[13px] text-white/80 leading-6">
-        Você é meu lar. Eu te escolheria mil vezes, em mil vidas. Obrigado por existir e por me permitir caminhar ao seu lado. 💫
-      </p>
-    </div>
-  </section>
-
-  <!-- Player fixo -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(env(safe-area-inset-bottom),12px)]">
-    <div class="glass rounded-2xl p-3 ring-1 ring-white/10">
-      <div class="flex items-center gap-3">
-        <button id="prevBtn" class="p-2 rounded-lg hover:bg-white/10" title="Anterior" aria-label="Foto anterior">⏮️</button>
-        <button id="playBtn" class="p-3 rounded-full bg-emerald-500 text-black font-bold" title="Play/Pause" aria-label="Tocar ou Pausar">▶️</button>
-        <button id="nextBtn" class="p-2 rounded-lg hover:bg-white/10" title="Próxima" aria-label="Próxima foto">⏭️</button>
-
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between">
-            <p id="trackTitle" class="text-[13px] font-semibold truncate">Selecione uma música</p>
-            <span id="time" class="text-[11px] text-white/60">0:00 / 0:00</span>
-          </div>
-          <input id="seek" type="range" min="0" max="100" value="0" class="w-full accent-emerald-400 h-1 mt-1" aria-label="Linha do tempo da música">
-        </div>
+    <!-- Carrossel (JS) -->
+    <section id="carrossel" class="px-0 pb-4">
+      <div class="px-5 flex items-end justify-between">
+        <h2 class="text-lg font-extrabold font-display">Nossas fotos</h2>
+        <span class="text-[11px] text-white/60">arraste →</span>
       </div>
-      <audio id="audio" preload="metadata" class="hidden"></audio>
+      <div id="carousel" class="mt-3 overflow-x-auto snap-x-mandatory no-scrollbar px-5" aria-label="Carrossel de fotos">
+        <div id="slidesWrap" class="flex gap-3"></div>
+      </div>
+    </section>
+
+    <!-- Cartinha -->
+    <section id="carta" class="px-5 pb-28">
+      <div class="glass rounded-3xl p-5 ring-1 ring-white/10">
+        <h3 class="text-base font-bold mb-1 font-display">Um recadinho</h3>
+        <p class="text-[13px] text-white/80 leading-6">
+          Você é meu lar. Eu te escolheria mil vezes, em mil vidas. Obrigado por existir e por me permitir caminhar ao seu lado. 💫
+        </p>
+      </div>
+    </section>
+
+    <!-- Player fixo (ícones modernos) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(env(safe-area-inset-bottom),12px)]">
+      <div class="glass rounded-2xl p-3 ring-1 ring-white/10">
+        <div class="flex items-center gap-3">
+          <button id="prevBtn" class="p-2 rounded-lg hover:bg-white/10" title="Anterior" aria-label="Foto anterior">
+            <iconify-icon icon="lucide:skip-back"></iconify-icon>
+          </button>
+          <button id="playBtn" class="p-3 rounded-full bg-emerald-500 text-black font-bold" title="Play/Pause" aria-label="Tocar ou Pausar">
+            <iconify-icon id="iconPlayMain" icon="lucide:play"></iconify-icon>
+          </button>
+          <button id="nextBtn" class="p-2 rounded-lg hover:bg-white/10" title="Próxima" aria-label="Próxima foto">
+            <iconify-icon icon="lucide:skip-forward"></iconify-icon>
+          </button>
+
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <p id="trackTitle" class="text-[13px] font-semibold truncate">Selecione uma música</p>
+              <span id="time" class="text-[11px] text-white/60">0:00 / 0:00</span>
+            </div>
+            <input id="seek" type="range" min="0" max="100" value="0" class="w-full accent-emerald-400 h-1 mt-1" aria-label="Linha do tempo da música">
+          </div>
+        </div>
+        <audio id="audio" preload="metadata" class="hidden"></audio>
+      </div>
     </div>
-  </div>
+  </main>
 
   <script>
-    // ============================
-    // SLIDES (foto ↔ música)
-    // -> Garanta que TODOS esses arquivos existam no projeto.
-    // ============================
+    /* ===== SLIDES (foto ↔ música) — seus dados atuais ===== */
     const slides = [
-      { photo: "assets/photos/01.jpg", music: { title: "Amor de Fim de Noite - Orochi",  src: "assets/music/musica1.mp3"  } },
-      { photo: "assets/photos/02.jpg", music: { title: "Heaven - Bryan Adamns",  src: "assets/music/musica2.mp3"  } },
-      { photo: "assets/photos/03.jpg", music: { title: "Can't Help Falling in Love - Elvis Presley",  src: "assets/music/musica3.mp3"  } },
-      { photo: "assets/photos/04.jpg", music: { title: "Entregador de FLor - Diego e Victor Hugo",  src: "assets/music/musica9.mp3"  } },
-      { photo: "assets/photos/05.jpg", music: { title: "Amo você tim -maia",  src: "assets/music/musica7.mp3"  } },
-      { photo: "assets/photos/08.jpg", music: { title: "Oceano - Djavan",  src: "assets/music/musica8.mp3"  } },
-      { photo: "assets/photos/09.jpg", music: { title: "Abelha sem mel -Matheus e Kauan ", src: "assets/music/musica11.mp3" } },
-      { photo: "assets/photos/10.jpg", music: { title: "Calma - Jorge e Mateus", src: "assets/music/musica10.mp3" } },
-      { photo: "assets/photos/12.jpg", music: { title: "É Você - ExaltaSamba", src: "assets/music/musica12.mp3" } },
+      { photo: "assets/photos/01.jpg", music: { title: "Amor de Fim de Noite - Orochi",                     src: "assets/music/musica1.mp3"  } },
+      { photo: "assets/photos/02.jpg", music: { title: "Heaven - Bryan Adamns",                              src: "assets/music/musica2.mp3"  } },
+      { photo: "assets/photos/03.jpg", music: { title: "Can't Help Falling in Love - Elvis Presley",         src: "assets/music/musica3.mp3"  } },
+      { photo: "assets/photos/04.jpg", music: { title: "Entregador de FLor - Diego e Victor Hugo",           src: "assets/music/musica9.mp3"  } },
+      { photo: "assets/photos/05.jpg", music: { title: "Amo você tim -maia",                                 src: "assets/music/musica7.mp3"  } },
+      { photo: "assets/photos/08.jpg", music: { title: "Oceano - Djavan",                                    src: "assets/music/musica8.mp3"  } },
+      { photo: "assets/photos/09.jpg", music: { title: "Abelha sem mel -Matheus e Kauan",                    src: "assets/music/musica11.mp3" } },
+      { photo: "assets/photos/10.jpg", music: { title: "Calma - Jorge e Mateus",                             src: "assets/music/musica10.mp3" } },
+      { photo: "assets/photos/12.jpg", music: { title: "É Você - ExaltaSamba",                               src: "assets/music/musica12.mp3" } },
     ];
 
-    // ====== ELEMENTOS ======
+    /* ===== ELEMENTOS ===== */
+    const landing = document.getElementById('landing');
+    const app = document.getElementById('app');
+    const enterBtn = document.getElementById('enterBtn');
+
     const audio = document.getElementById('audio');
     const btnPlayTop = document.getElementById('btnPlayTop');
     const playBtn = document.getElementById('playBtn');
+    const iconPlayTop = document.getElementById('iconPlayTop');
+    const iconPlayMain = document.getElementById('iconPlayMain');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const seek = document.getElementById('seek');
@@ -176,7 +241,20 @@
     let currentSlide = 0;
     let seeking = false;
 
-    // Renderiza os cards do carrossel
+    /* ===== Landing → App (transição e start opcional) ===== */
+    enterBtn.addEventListener('click', async () => {
+      landing.classList.add('fade-out');
+      loadTrackForSlide(currentSlide);
+      try { await audio.play(); setPlayIcons(true); } catch(e) {}
+      setTimeout(() => {
+        landing.classList.add('hidden');
+        app.classList.remove('hidden');
+        app.classList.add('fade-in');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 450);
+    });
+
+    /* ===== Carrossel ===== */
     function renderSlides(){
       slidesWrap.innerHTML = '';
       slides.forEach((s, i) => {
@@ -195,25 +273,18 @@
       });
     }
 
-    // Carrega música do slide i
     function loadTrackForSlide(i){
       const t = slides[i]?.music;
       if(!t) return;
       const wasPlaying = !audio.paused;
-      // evita recarregar a mesma src à toa
       const newSrc = new URL(t.src, window.location).href;
-      if (audio.src !== newSrc) {
-        audio.src = t.src;
-        audio.load();
-      }
+      if (audio.src !== newSrc) { audio.src = t.src; audio.load(); }
       trackTitle.textContent = t.title;
       if (wasPlaying) audio.play().catch(()=>{});
     }
 
-    // Formata tempo mm:ss
     function fmt(t){ if(isNaN(t)) return "0:00"; const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0'); return `${m}:${s}`; }
 
-    // Vai para um slide específico (e sincroniza música)
     function goToSlide(i){
       currentSlide = (i + slides.length) % slides.length;
       const card = slidesWrap.children[currentSlide];
@@ -221,12 +292,10 @@
       loadTrackForSlide(currentSlide);
     }
 
-    // Observa qual card está mais visível para sincronizar música ao arrastar
     let io;
     function initObserver(){
       if (io) io.disconnect();
       io = new IntersectionObserver((entries) => {
-        // pega o mais visível
         let best = null;
         for (const e of entries) {
           if (e.isIntersecting) {
@@ -245,11 +314,19 @@
       [...slidesWrap.children].forEach(el => io.observe(el));
     }
 
-    // Controles do player
+    /* ===== Player ===== */
+    function setPlayIcons(playing){
+      const icon = playing ? 'lucide:pause' : 'lucide:play';
+      iconPlayTop?.setAttribute('icon', icon);
+      iconPlayMain?.setAttribute('icon', icon);
+    }
     function togglePlay(){
       if(!audio.src){ loadTrackForSlide(currentSlide); }
-      if(audio.paused){ audio.play().catch(()=>{}); playBtn.textContent='⏸️'; }
-      else { audio.pause(); playBtn.textContent='▶️'; }
+      if(audio.paused){
+        audio.play().then(()=> setPlayIcons(true)).catch(()=>{});
+      } else {
+        audio.pause(); setPlayIcons(false);
+      }
     }
     playBtn.addEventListener('click', togglePlay);
     btnPlayTop.addEventListener('click', togglePlay);
@@ -263,10 +340,7 @@
         time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
       }
     });
-    audio.addEventListener('ended', ()=> {
-      // ao terminar a música, avança para a próxima foto (e música)
-      goToSlide(currentSlide + 1);
-    });
+    audio.addEventListener('ended', ()=> goToSlide(currentSlide + 1));
 
     seek.addEventListener('input', ()=> seeking = true);
     seek.addEventListener('change', ()=>{
@@ -274,10 +348,10 @@
       seeking = false;
     });
 
-    // Inicialização
+    /* ===== Init ===== */
     renderSlides();
     initObserver();
-    loadTrackForSlide(currentSlide); // prepara a 1ª faixa (sem autoplay)
+    loadTrackForSlide(currentSlide); // prepara a 1ª (sem autoplay até clicar na landing)
   </script>
 </body>
 </html>
